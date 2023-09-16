@@ -7,3 +7,5 @@
 * Chose to use plotly since there was a React library and was available on a CDN. Also super easy to use and has some cool functionality.
 
 * Since I didn't have much free time over this weekend and given the time restraints, instead of displaying the locations on a map, I just opened a tab to google maps with the location.
+
+* PS. it's really hard to adhere and incorporate all these "preferences" together at once on the same page 🤧
