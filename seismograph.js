@@ -39,7 +39,7 @@ function Seismograph () {
             { eventData ? 
                 <div className={ `data-display` }>
                     <div className={ "table" }>
-                        <div className={ `header` }>
+                        <div className={ `header` }> { /* column headers */ }
                             <span style={ { paddingRight: `10px`, width: `100px` } }>Date</span>
                             <span style={ { paddingRight: `10px`, width: `80px` } }>Time</span>
                             <span style={ { paddingRight: `10px`, width: `225px` } }>Location</span>
@@ -48,7 +48,7 @@ function Seismograph () {
                         </div>
                         <div className={ `rows` }>
                             { eventData.map( ( event, index ) => 
-                                <div className={ `row` } key={ index }>
+                                <div className={ `row` } key={ index }> { /* column rows */ }
                                     <span style={ { paddingRight: `10px`, width: `100px` } }>{ event.date }</span>
                                     <span style={ { paddingRight: `10px`, width: `80px` } }>{ event.timestamp }</span>
                                     <span style={ { paddingRight: `10px`, width: `225px` } }><a href={ `http://maps.google.com/?q=${ event.location }` } target={ `_blank` }>{ event.location }</a></span>
@@ -69,9 +69,8 @@ function Seismograph () {
                                     } ),
                                     type: 'scatter',
                                     mode: `markers`
-                                },
+                                }
                             ] }
-                            // layout={}
                         />
                     </div>
                 </div>

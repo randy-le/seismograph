@@ -56,9 +56,11 @@ body {
 }
 
 .input {
-    margin-bottom: 20px;
     height: 36px;
     border-radius: 5px;
+
+    margin-bottom: 20px;
+    padding-left: 12px;
 }
 
 .data-display {
@@ -71,6 +73,11 @@ body {
 @media ( max-width: 800px ) {
     .data-display{
         flex-direction: column;
+        overflow: auto;
+    }
+
+    .graph {
+        margin: 20px 0 0 0;
     }
 }
 
