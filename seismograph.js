@@ -2,7 +2,8 @@ let dataLoaded = false;
 let parsedData = null;
 
 function Seismograph () {
-    let [ jsonData, setJsonData ] = React.useState();
+    let [ eventData, setEventData ] = React.useState();
+    const Plot = createPlotlyComponent( Plotly );
 
     // load data from json
     if ( !dataLoaded ) {
@@ -20,22 +21,7 @@ function Seismograph () {
 
             // set react state & don't load data again
             dataLoaded = true;
-            setJsonData( [ ...parsedData ] );
-
-            // set data for graph (wait 5 sec for DOM to render)
-            setTimeout( () => {
-                const Plot = createPlotlyComponent( Plotly );
-                ReactDOM.render( React.createElement( 
-                    Plot, { 
-                        data: [ { 
-                            x: [1, 2, 3],
-                            y: [2, 6, 3],
-                            text: [`hey`, `you`, `suck`],
-                            type: `scatter`,
-                    } ] }, document.querySelector( `#graph` )
-                ) );
-            }, 5000 );
-                
+            setEventData( [ ...parsedData ] );   
         } ); 
     }
 
@@ -44,34 +30,52 @@ function Seismograph () {
             <div className={ `title` }>
                 <div>Seismograph</div>
                 <div>
+                    <img id={ `flames` } src={ `https://cdn.7tv.app/emote/60b899f34453adf5ae64a2f1/4x.webp` } />                    
                     <img id={ `flames` } src={ `https://cdn.freebiesupply.com/logos/large/2x/calgary-flames-logo.png` } />                    
                     <img id={ `flames` } src={ `https://cdn.7tv.app/emote/60b7ef8a55c320f0e87437fc/4x.webp` } />                    
                 </div>
             </div>
             <input className={ `input` } onChange={ ( e ) => handleSearch( e.target.value ) } placeholder={ `Search...` }></input>
-            { jsonData ? 
-                <div style={ { display: `flex`, flexDirection: `row`, overflow: `auto` } }>
+            { eventData ? 
+                <div className={ `data-display` }>
                     <div className={ "table" }>
-                        <div className={ `row header` }>
+                        <div className={ `header` }>
                             <span style={ { paddingRight: `10px`, width: `100px` } }>Date</span>
                             <span style={ { paddingRight: `10px`, width: `80px` } }>Time</span>
                             <span style={ { paddingRight: `10px`, width: `225px` } }>Location</span>
                             <span style={ { paddingRight: `10px`, width: `100px` } }>Magnitude</span>
                             <span style={ { paddingRight: `10px`, width: `50px` } }>Type</span>
                         </div>
-                        { jsonData.map( ( event, index ) => 
-                            <div className={ `row` } key={ index }>
-                                <span style={ { paddingRight: `10px`, width: `100px` } }>{ event.date }</span>
-                                <span style={ { paddingRight: `10px`, width: `80px` } }>{ event.timestamp }</span>
-                                <span style={ { paddingRight: `10px`, width: `225px` } }><a href={ `http://maps.google.com/?q=${ event.location }` } target={ `_blank` }>{ event.location }</a></span>
-                                <span style={ { paddingRight: `10px`, width: `100px` } }>{ event.magnitude }</span>
-                                <span style={ { paddingRight: `10px`, width: `50px` } }>{ event.type }</span>
-                            </div>
-                        ) }
+                        <div className={ `rows` }>
+                            { eventData.map( ( event, index ) => 
+                                <div className={ `row` } key={ index }>
+                                    <span style={ { paddingRight: `10px`, width: `100px` } }>{ event.date }</span>
+                                    <span style={ { paddingRight: `10px`, width: `80px` } }>{ event.timestamp }</span>
+                                    <span style={ { paddingRight: `10px`, width: `225px` } }><a href={ `http://maps.google.com/?q=${ event.location }` } target={ `_blank` }>{ event.location }</a></span>
+                                    <span style={ { paddingRight: `10px`, width: `100px` } }>{ event.magnitude }</span>
+                                    <span style={ { paddingRight: `10px`, width: `50px` } }>{ event.type }</span>
+                                </div>
+                            ) }
+                        </div>
                     </div>
-                    <div id={ "graph" }></div>
+                    <div className={ "graph" }>
+                        <Plot
+                            data={ [ 
+                                {
+                                    x: eventData.map( event => event.date ),
+                                    y: eventData.map( event => event.magnitude ),
+                                    text: eventData.map( event => { 
+                                        return `${event.location} - Type ${event.type}`
+                                    } ),
+                                    type: 'scatter',
+                                    mode: `markers`
+                                },
+                            ] }
+                            // layout={}
+                        />
+                    </div>
                 </div>
-            : <img src={`https://res.cloudinary.com/bytesizedpieces/image/upload/v1656084931/article/a-how-to-guide-on-making-an-animated-loading-image-for-a-website/animated_loader_gif_n6b5x0.gif`}/> }
+            : null }
         </div>
     );
 
@@ -98,7 +102,7 @@ function Seismograph () {
         } )
 
         // set react state to update the list
-        setJsonData( [ ...filteredData ] );
+        setEventData( [ ...filteredData ] );
     }
 }
 
