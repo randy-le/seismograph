@@ -63,7 +63,7 @@ function Seismograph () {
                             <div className={ `row` } key={ index }>
                                 <span style={ { paddingRight: `10px`, width: `100px` } }>{ event.date }</span>
                                 <span style={ { paddingRight: `10px`, width: `80px` } }>{ event.timestamp }</span>
-                                <span style={ { paddingRight: `10px`, width: `225px` } }>{ event.location }</span>
+                                <span style={ { paddingRight: `10px`, width: `225px` } }><a href={ `http://maps.google.com/?q=${ event.location }` } target={ `_blank` }>{ event.location }</a></span>
                                 <span style={ { paddingRight: `10px`, width: `100px` } }>{ event.magnitude }</span>
                                 <span style={ { paddingRight: `10px`, width: `50px` } }>{ event.type }</span>
                             </div>

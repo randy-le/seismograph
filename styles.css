@@ -40,7 +40,7 @@ body {
 }
 
 .title {
-    font-size: 36px;
+    font-size: 60px;
     margin-bottom: 20px;
 
     display: flex;
@@ -85,4 +85,8 @@ body {
     #sheep {
         display: none;
     }
+}
+
+a:visited {
+    color: #00f;
 }
