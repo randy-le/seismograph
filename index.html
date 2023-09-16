@@ -30,12 +30,12 @@
     let parsedData = null;
 
     function Seismograph () {
-
         let [ jsonData, setJsonData ] = React.useState();
 
         // load data from json
         if ( !dataLoaded ) {
             fetch( `./sensor_data.json` ).then( response => response.json() ).then( json => { 
+
                 // parse data for friendlier use
                 parsedData = json.map( event => {
                 return {
@@ -45,9 +45,25 @@
                     magnitude: event.magnitude,
                     type: event.type
                 } } );
+
                 // set react state & don't load data again
                 dataLoaded = true;
-                setJsonData( [ ...parsedData ] );                 
+                setJsonData( [ ...parsedData ] );
+
+                // set data for graph (wait 5 sec for DOM to render)
+                setTimeout( () => {
+                    const Plot = createPlotlyComponent( Plotly );
+                    ReactDOM.render( React.createElement( 
+                        Plot, { 
+                            data: [ { 
+                                x: [1, 2, 3],
+                                y: [2, 6, 3],
+                                text: [`hey`, `you`, `suck`],
+                                type: `scatter`,
+                        } ] }, document.querySelector( `#graph` )
+                    ) );
+                }, 5000 );
+                 
             } ); 
         }
 
@@ -56,7 +72,7 @@
                 <div className={ `title` }>Seismograph</div>
                 <input className={ `input` } onChange={ ( e ) => handleSearch( e.target.value ) } placeholder={ `Search...` }></input>
                 { jsonData ? 
-                    <div style={ { display: `flex`, flexDirection: `row` } }>
+                    <div style={ { display: `flex`, flexDirection: `row`, overflow: `auto` } }>
                         <div className={ "table" }>
                             <div className={ `row header` }>
                                 <span style={ { paddingRight: `10px`, width: `100px` } }>Date</span>
@@ -86,16 +102,20 @@
          * event's cells to identify any matches with the query.
          * */
         function handleSearch ( input ) {
+
             // filter through the parsed data
             const filteredData = parsedData.filter( ( event ) => {
+
                 // only interested in the values of the data in this filter
                 const data = Object.values( event );
+
                 for ( const cell of data ) {
                     // make sure the input is a string and lowercase
                     if ( String( cell ).toLowerCase().includes( input ) ) {
                         return true;
                     }
                 }
+
                 return false;
             } )
 
