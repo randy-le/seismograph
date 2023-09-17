@@ -1,4 +1,4 @@
-# seismograph
+# https://randy-le.github.io/seismograph
 
 * I've never used React through a CDN before and thought it'd be interesting to try it out. I haven't used ReactDOM.render in forever. Definitely brought about some challenges that I'm just used to not having working in a node environment.
 
